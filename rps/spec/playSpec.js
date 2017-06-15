@@ -1,42 +1,4 @@
-function Rps(){
-    this.play = function(p1, p2, ui){
-        new PlayRequest(p1, p2, ui).execute()
-    }
-}
-
-function PlayRequest(p1, p2, ui){
-    this.execute = function(){
-        if (invalid(p1) || invalid(p2))
-            ui.invalid()
-        else if (shapesAreTheSame())
-            ui.tie()
-        else if (p1BeatsP2()
-        )
-            ui.p1Wins()
-        else
-            ui.p2Wins()
-    }
-
-    const ROCK = "rock"
-    const PAPER = "paper"
-    const SCISSORS = "scissors"
-
-    const validThrows = [ROCK, PAPER, SCISSORS]
-
-    function invalid(t) {
-        return !validThrows.includes(t)
-    }
-
-    function shapesAreTheSame() {
-        return p1 === p2
-    }
-
-    function p1BeatsP2() {
-        return p1 === ROCK     && p2 === SCISSORS ||
-               p1 === PAPER    && p2 === ROCK     ||
-               p1 === SCISSORS && p2 === PAPER
-    }
-}
+const Rps = require("../src/Rps");
 
 describe("play", function () {
     let rps
@@ -53,19 +15,19 @@ describe("play", function () {
         })
         
         it("rock v scissors", function () {
-            rps.play("rock", "scissors", ui)
+            rps.playRound("rock", "scissors", ui)
 
             expect(ui.p1Wins).toHaveBeenCalled()
         })
 
         it("paper v. rock", function () {
-            rps.play("paper", "rock", ui)
+            rps.playRound("paper", "rock", ui)
 
             expect(ui.p1Wins).toHaveBeenCalled()
         })
 
         it("scissors v. paper", function () {
-            rps.play("scissors", "paper", ui)
+            rps.playRound("scissors", "paper", ui)
 
             expect(ui.p1Wins).toHaveBeenCalled()
         })
@@ -79,19 +41,19 @@ describe("play", function () {
         })
         
         it("scissors v rock", function () {
-            rps.play("scissors", "rock", ui)
+            rps.playRound("scissors", "rock", ui)
 
             expect(ui.p2Wins).toHaveBeenCalled()
         })
 
         it("rock v. paper", function () {
-            rps.play("rock", "paper", ui)
+            rps.playRound("rock", "paper", ui)
 
             expect(ui.p2Wins).toHaveBeenCalled()
         })
 
         it("paper v. scissors", function () {
-            rps.play("paper", "scissors", ui)
+            rps.playRound("paper", "scissors", ui)
 
             expect(ui.p2Wins).toHaveBeenCalled()
         })
@@ -105,19 +67,19 @@ describe("play", function () {
         })
         
         it("rock v. rock", function () {
-            rps.play("rock", "rock", ui)
+            rps.playRound("rock", "rock", ui)
 
             expect(ui.tie).toHaveBeenCalled()
         })
         
         it("paper v. paper", function () {
-            rps.play("paper", "paper", ui)
+            rps.playRound("paper", "paper", ui)
 
             expect(ui.tie).toHaveBeenCalled()
         })
         
         it("scissors v. scissors", function () {
-            rps.play("scissors", "scissors", ui)
+            rps.playRound("scissors", "scissors", ui)
 
             expect(ui.tie).toHaveBeenCalled()
         })
@@ -132,19 +94,19 @@ describe("play", function () {
         })
 
         it("rock v. [invalid throw]", function () {
-            rps.play("rock", Math.random(), ui)
+            rps.playRound("rock", Math.random(), ui)
 
             expect(ui.invalid).toHaveBeenCalled()
         })
 
         it("invalid throw v. rock", function () {
-            rps.play(Math.random(), "rock", ui)
+            rps.playRound(Math.random(), "rock", ui)
 
             expect(ui.invalid).toHaveBeenCalled()
         })
 
         it("invalid v. same invalid", function () {
-            rps.play("sailboat", "sailboat", ui)
+            rps.playRound("sailboat", "sailboat", ui)
 
             expect(ui.invalid).toHaveBeenCalled()
         })
